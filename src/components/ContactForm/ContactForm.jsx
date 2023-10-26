@@ -1,16 +1,9 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import {
-  FormButton,
-  FormElement,
-  Input,
-  Label,
-  RadioLabel,
-  RadioWrapper,
-} from './ContactForm.styled';
-import { addContact } from 'redux/contactsSlice';
+import { FormButton, FormElement, Input, Label } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations/operations';
 
 export default function Form() {
   const [name, setName] = useState('');
@@ -39,23 +32,6 @@ export default function Form() {
       ? alert('This contact has already exists')
       : dispatch(addContact(data));
     reset();
-  };
-
-  const handleRadioButtons = event => {
-    const { value } = event.target;
-    switch (value) {
-      case 'friend':
-        setType(value);
-        break;
-      case 'business':
-        setType(value);
-        break;
-      case 'family':
-        setType(value);
-        break;
-      default:
-        break;
-    }
   };
 
   const reset = () => {
@@ -92,38 +68,6 @@ export default function Form() {
           required
         />
       </Label>
-      <RadioWrapper>
-        <RadioLabel>
-          <input
-            type="radio"
-            name="type"
-            value="business"
-            onChange={handleRadioButtons}
-            checked={type === 'business'}
-          />
-          buisness
-        </RadioLabel>
-        <RadioLabel>
-          <input
-            type="radio"
-            name="type"
-            value="friend"
-            onChange={handleRadioButtons}
-            checked={type === 'friend'}
-          />
-          friend
-        </RadioLabel>
-        <RadioLabel>
-          <input
-            type="radio"
-            name="type"
-            value="family"
-            onChange={handleRadioButtons}
-            checked={type === 'family'}
-          />
-          family
-        </RadioLabel>
-      </RadioWrapper>
       <FormButton type="submit">Add contact</FormButton>
     </FormElement>
   );

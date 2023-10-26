@@ -22,7 +22,7 @@ const Headline = styled.h1`
 `;
 
 const Title = styled.h2`
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   text-align: center;
 `;
 

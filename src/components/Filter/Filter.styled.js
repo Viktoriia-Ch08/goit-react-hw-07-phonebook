@@ -6,7 +6,7 @@ const FilterContainer = styled.div`
   align-items: center;
   gap: 10px;
 
-  margin-bottom: 45px;
+  margin-bottom: 25px;
 `;
 
 const FilterLabel = styled.label`

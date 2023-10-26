@@ -14,6 +14,7 @@ const List = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 10px;
 `;
 
 const Item = styled.li`

@@ -1,15 +1,15 @@
 import { Input } from 'components/ContactForm/ContactForm.styled';
 import { FilterContainer, FilterLabel } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { filterValue } from 'redux/selectors';
-import { filterName } from 'redux/filterSlice';
+import { getFilterValue } from 'redux/selectors';
+import { setFilterValue } from 'redux/contactsSlice';
 
 const Filter = () => {
-  const filter = useSelector(filterValue);
+  const filter = useSelector(getFilterValue);
   const dispatch = useDispatch();
 
   const filterInputNames = event => {
-    dispatch(filterName(event.currentTarget.value));
+    dispatch(setFilterValue(event.currentTarget.value));
   };
 
   return (

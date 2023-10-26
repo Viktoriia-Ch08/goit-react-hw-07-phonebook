@@ -2,18 +2,18 @@ import { ButtonWrapper, DeleteButton, Item, List } from './ContactsList.styled';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContacts } from 'redux/contactsSlice';
-import { filterValue, getContacts } from 'redux/selectors';
+import { getContacts, getFilterValue } from 'redux/selectors';
+import { deletedContacts } from 'redux/operations/operations';
 
 export default function ContactsList() {
   const [contactsIdsToDelete, setContactIdsToDelete] = useState([]);
   const contacts = useSelector(getContacts);
-  const filter = useSelector(filterValue);
+  const filter = useSelector(getFilterValue);
 
   const dispatch = useDispatch();
 
   const handleDeleteContacts = contactsToDelete => {
-    dispatch(deleteContacts(contactsToDelete));
+    dispatch(deletedContacts(contactsToDelete));
   };
 
   const handleCheckboxStatus = selectedContactId => {
@@ -44,7 +44,7 @@ export default function ContactsList() {
                   checked={contactsIdsToDelete.includes(contact.id)}
                   onChange={() => handleCheckboxStatus(contact.id)}
                 />
-                <p>{`${contact.name}: ${contact.number} ${
+                <p>{`${contact.name}: ${contact.phone} ${
                   contact.type ? `*${contact.type}*` : ''
                 }`}</p>
               </Item>
