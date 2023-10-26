@@ -3,7 +3,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts, getFilterValue } from 'redux/selectors';
-import { deletedContacts } from 'redux/operations/operations';
+import { deleteContacts } from 'redux/operations/operations';
 
 export default function ContactsList() {
   const [contactsIdsToDelete, setContactIdsToDelete] = useState([]);
@@ -13,7 +13,7 @@ export default function ContactsList() {
   const dispatch = useDispatch();
 
   const handleDeleteContacts = contactsToDelete => {
-    dispatch(deletedContacts(contactsToDelete));
+    dispatch(deleteContacts(contactsToDelete));
   };
 
   const handleCheckboxStatus = selectedContactId => {

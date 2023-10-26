@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
 import { FormButton, FormElement, Input, Label } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from 'redux/selectors';
@@ -8,7 +7,6 @@ import { addContact } from 'redux/operations/operations';
 export default function Form() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const [type, setType] = useState('friend');
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
@@ -27,7 +25,7 @@ export default function Form() {
 
   const handleSubmitButton = e => {
     e.preventDefault();
-    const data = { name, number, type, id: nanoid() };
+    const data = { name, number };
     contacts.some(element => element.name === data.name)
       ? alert('This contact has already exists')
       : dispatch(addContact(data));
@@ -37,7 +35,6 @@ export default function Form() {
   const reset = () => {
     setName('');
     setNumber('');
-    setType('friend');
   };
 
   return (
