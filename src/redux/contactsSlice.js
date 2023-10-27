@@ -71,4 +71,4 @@ const setRejected = (state, action) => {
 
 export const { setFilterValue } = contactsSlice.actions;
 
-export default contactsSlice.reducer;
+export const contactsReducer = contactsSlice.reducer;

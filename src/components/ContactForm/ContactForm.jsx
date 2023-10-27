@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FormButton, FormElement, Input, Label } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 import { addContact } from 'redux/operations/operations';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Form() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleInputChange = event => {
@@ -29,7 +29,16 @@ export default function Form() {
     e.preventDefault();
     const data = { name, number };
     contacts.some(element => element.name === data.name)
-      ? alert('This contact has already exists')
+      ? toast.error('This contact has already exists', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        })
       : dispatch(addContact(data))
           .unwrap()
           .then(() => {
