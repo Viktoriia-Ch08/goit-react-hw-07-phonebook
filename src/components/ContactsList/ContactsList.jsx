@@ -80,9 +80,18 @@ export default function ContactsList() {
           <DeleteButton
             type="button"
             onClick={() => {
-              if (contactsIdsToDelete.length === 0)
-                alert('Choose contact(s) to delete');
-              else {
+              if (contactsIdsToDelete.length === 0) {
+                toast.error('Choose contact(s) to delete', {
+                  position: 'top-right',
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: 'colored',
+                });
+              } else {
                 handleDeleteContacts(contactsIdsToDelete);
                 reset();
               }
