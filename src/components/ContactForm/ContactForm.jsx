@@ -3,6 +3,8 @@ import { FormButton, FormElement, Input, Label } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from 'redux/selectors';
 import { addContact } from 'redux/operations/operations';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Form() {
   const [name, setName] = useState('');
@@ -28,7 +30,20 @@ export default function Form() {
     const data = { name, number };
     contacts.some(element => element.name === data.name)
       ? alert('This contact has already exists')
-      : dispatch(addContact(data));
+      : dispatch(addContact(data))
+          .unwrap()
+          .then(() => {
+            toast.success('You have added the contact!', {
+              position: 'top-right',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'colored',
+            });
+          });
     reset();
   };
 
