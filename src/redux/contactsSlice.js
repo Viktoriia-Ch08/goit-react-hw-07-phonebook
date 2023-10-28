@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
   addContact,
   deleteContacts,
@@ -18,56 +18,46 @@ const contactsSlice = createSlice({
       state.filter = action.payload;
     },
   },
-  extraReducers: {
-    //fetchContacts
-    [fetchContacts.pending](state) {
-      setPending(state);
-    },
-    [fetchContacts.fulfilled](state, action) {
-      state.isLoading = false;
-      state.items = action.payload;
-    },
-    [fetchContacts.rejected](state, action) {
-      setRejected(state, action);
-    },
-
-    //addContact
-    [addContact.pending](state) {
-      setPending(state);
-    },
-    [addContact.fulfilled](state, action) {
-      state.items.push(action.payload);
-      state.isLoading = false;
-    },
-    [addContact.rejected](state, action) {
-      setRejected(state, action);
-    },
-
-    // deleteContacts
-    [deleteContacts.pending](state) {
-      setPending(state);
-    },
-    [deleteContacts.fulfilled](state, action) {
-      state.isLoading = false;
-      state.items = state.items.filter(
-        contact => !action.payload.includes(contact.id)
+  extraReducers: builder => {
+    builder
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = action.payload;
+      })
+      .addCase(addContact.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+        state.isLoading = false;
+      })
+      .addCase(deleteContacts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = state.items.filter(
+          contact => !action.payload.includes(contact.id)
+        );
+      })
+      .addMatcher(
+        isAnyOf(
+          fetchContacts.pending,
+          addContact.pending,
+          deleteContacts.pending
+        ),
+        state => {
+          state.isLoading = true;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          fetchContacts.rejected,
+          addContact.rejected,
+          deleteContacts.rejected
+        ),
+        (state, action) => {
+          state.isLoading = false;
+          state.error = action.payload;
+        }
       );
-    },
-    [deleteContacts.rejected](state, action) {
-      setRejected(state, action);
-    },
   },
 });
-
-const setPending = state => {
-  state.isLoading = true;
-  state.error = null;
-};
-
-const setRejected = (state, action) => {
-  state.isLoading = false;
-  state.error = action.payload;
-};
 
 export const { setFilterValue } = contactsSlice.actions;
 
