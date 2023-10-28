@@ -8,7 +8,10 @@ import {
   selectIsLoading,
 } from 'redux/selectors';
 import { deleteContacts } from 'redux/operations/operations';
-import { toast } from 'react-toastify';
+import {
+  failedNotification,
+  successfullNotification,
+} from 'services/notifications';
 
 export default function ContactsList() {
   const [contactsIdsToDelete, setContactIdsToDelete] = useState([]);
@@ -21,21 +24,16 @@ export default function ContactsList() {
   const handleDeleteContacts = contactsToDelete => {
     dispatch(deleteContacts(contactsToDelete))
       .unwrap()
-      .then(() => {
-        toast.success(
-          `You have deleted ${contactsToDelete.length} contact(s)!`,
-          {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-          }
-        );
-      });
+      .then(() =>
+        successfullNotification(
+          `You have deleted ${contactsToDelete.length} contact(s)!`
+        )
+      )
+      .catch(error =>
+        failedNotification(
+          `Smth went wrong, you didn't delete the contact(s): ${error.message} 😭`
+        )
+      );
   };
 
   const handleCheckboxStatus = selectedContactId => {
@@ -81,16 +79,7 @@ export default function ContactsList() {
             type="button"
             onClick={() => {
               if (contactsIdsToDelete.length === 0) {
-                toast.error('Choose contact(s) to delete', {
-                  position: 'top-right',
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: 'colored',
-                });
+                failedNotification('Choose contact(s) to delete');
               } else {
                 handleDeleteContacts(contactsIdsToDelete);
                 reset();

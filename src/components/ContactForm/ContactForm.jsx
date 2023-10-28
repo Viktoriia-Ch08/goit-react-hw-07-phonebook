@@ -3,8 +3,10 @@ import { FormButton, FormElement, Input, Label } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from 'redux/selectors';
 import { addContact } from 'redux/operations/operations';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  failedNotification,
+  successfullNotification,
+} from 'services/notifications';
 
 export default function Form() {
   const [name, setName] = useState('');
@@ -29,30 +31,16 @@ export default function Form() {
     e.preventDefault();
     const data = { name, number };
     contacts.some(element => element.name === data.name)
-      ? toast.error('This contact has already exists', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-        })
+      ? failedNotification('This contact has already exists')
       : dispatch(addContact(data))
           .unwrap()
           .then(() => {
-            toast.success('You have added the contact!', {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'colored',
-            });
-          });
+            successfullNotification('You have added the contact!');
+          })
+          .catch(() =>
+            failedNotification(`Smth went wrong, you didn't add a contact 😭`)
+          );
+
     reset();
   };
 

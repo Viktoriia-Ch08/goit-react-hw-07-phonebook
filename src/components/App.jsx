@@ -7,6 +7,7 @@ import { selectContacts, selectIsLoading } from 'redux/selectors';
 import { fetchContacts } from 'redux/operations/operations';
 import { useEffect, CSSProperties } from 'react';
 import { ClipLoader } from 'react-spinners';
+import { failedNotification } from 'services/notifications';
 
 export default function App() {
   const contacts = useSelector(selectContacts);
@@ -20,7 +21,13 @@ export default function App() {
   };
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(fetchContacts())
+      .unwrap()
+      .catch(error =>
+        failedNotification(
+          `😭 Sorry, smth wrong with your URL: ${error.message}`
+        )
+      );
   }, [dispatch]);
 
   return (
