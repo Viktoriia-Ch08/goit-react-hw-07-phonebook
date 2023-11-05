@@ -10,7 +10,7 @@ import {
 
 export default function Form() {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
@@ -19,8 +19,8 @@ export default function Form() {
       case 'name':
         setName(event.currentTarget.value);
         break;
-      case 'number':
-        setNumber(event.currentTarget.value);
+      case 'phone':
+        setPhone(event.currentTarget.value);
         break;
       default:
         break;
@@ -29,7 +29,7 @@ export default function Form() {
 
   const handleSubmitButton = e => {
     e.preventDefault();
-    const data = { name, number };
+    const data = { name, phone };
     contacts.some(element => element.name === data.name)
       ? failedNotification('This contact has already exists')
       : dispatch(addContact(data))
@@ -46,7 +46,7 @@ export default function Form() {
 
   const reset = () => {
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -68,8 +68,8 @@ export default function Form() {
         Number
         <Input
           type="tel"
-          name="number"
-          value={number}
+          name="phone"
+          value={phone}
           onChange={handleInputChange}
           placeholder="+380(88)-233-22-22"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
